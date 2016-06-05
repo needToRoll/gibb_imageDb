@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -7,7 +7,7 @@
  * Time: 11:11
  */
 
-require "\\view\\View.php";
+require "/view/View.php";
 
 class DefaultController
 {

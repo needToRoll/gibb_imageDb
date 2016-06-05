@@ -22,9 +22,9 @@ class Dispatcher
     public function dispatch(){
         $uri = $_SERVER["REQUEST_URI"];
         $arguments = explode("/",$uri);
-        $controller = (!empty($arguments[0]) ? $arguments[0] : "Default")."Controller";
-        $action = (!empty($arguments[1])? $arguments[1]:"showHome");
-        require "\\controller\\$controller.php";
+        $controller = (!empty($arguments[1]) ? ucfirst($arguments[1]) : "Default")."Controller";
+        $action = (!empty($arguments[2])? $arguments[2]:"showHome");
+        require "/controller/$controller.php";
         $controllerObject = new $controller();
         $controllerObject->$action();
 

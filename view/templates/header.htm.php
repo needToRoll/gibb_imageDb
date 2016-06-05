@@ -40,7 +40,7 @@
                         }
                     } else {
                         echo "<li><a>Hallo Gast</a></li></ul><ul class='nav navbar-nav navbar-right'>" .
-                            "<li><a href='Default/home'>Registrierung / Login</a></li>";
+                            "<li><a href='Default/showHome'>Registrierung / Login</a></li>";
                     }
                     ?>
                 </ul>
