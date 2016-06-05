@@ -12,7 +12,6 @@ require_once "/model/UserModel.php";
 class UserController
 {
     private $userModel;
-    private $user;
 
     public function __construct()
     {
