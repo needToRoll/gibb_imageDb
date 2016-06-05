@@ -11,6 +11,17 @@ class TagModel extends Model implements DatabaseInterface
 
 {
 
+    /**
+     * TagModel constructor.
+     */
+    public function __construct()
+    {
+    }
+
+    public function readByImage($imageId){
+        
+    }
+    
     public function save($object)
     {
         // TODO: Implement create() method.

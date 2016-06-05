@@ -1,6 +1,8 @@
 <?php
 require "entities\\User.php";
 require "Model.php";
+
+
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -10,14 +12,14 @@ require "Model.php";
 class UserModel extends Model implements DatabaseInterface
 {
 
-    public function create($username, $mail,$pw)
+    public function create($username, $mail,$pw,$isAdmin)
     {
-        $stmt = $this->db->prepare('INSERT INTO user (username, email, password) VALUES (?,?,?)');
-        $stmt->bindParam('sss', $username,$mail,$pw);
+        $stmt = $this->db->prepare('INSERT INTO user (username, mail, password, isAdmin) VALUES (?,?,?,?)');
+        $stmt->bindParam('sssb', $username,$mail,$pw,$isAdmin);   
         $stmt->execute();
         $id = $this->db->insert_id();
 
-        return new User($id, $username, $mail, $pw);
+        return new User($id, $username, $mail, $pw,$isAdmin);
     }
 
     /**
@@ -27,7 +29,7 @@ class UserModel extends Model implements DatabaseInterface
 
     public function save($object)
     {
-        return $this->create($object->getUsername(),$object->getMail(),$object->getPw());
+        return $this->create($object->getUsername(),$object->getMail(),$object->getPw(),$object->getIsAdmin());
     }
 
     public function readById($id)
@@ -36,7 +38,7 @@ class UserModel extends Model implements DatabaseInterface
         $stmt->bind_param(":id", $id);
         if($stmt->execute()){
             $result = $stmt->get_result()->fetch_assoc();
-            return new User($this->db->insert_id(), $result["username"], $result["mail"], $result["password"],False);
+            return new User($id, $result["username"], $result["mail"], $result["password"],$result['isAdmin']);
         } else {
             return null;
         }
@@ -50,7 +52,7 @@ class UserModel extends Model implements DatabaseInterface
         $stmt->execute();
         $output = array();
         while($row = $stmt->get_result()->fetch_assoc()){
-            $output[] = new User($row["userId"],$row["username"], $row["mail"], $row["password"],false);
+            $output[] = new User($row["userId"],$row["username"], $row["mail"], $row["password"],$row['isAdmin']);
         }
         return $output;
     }
@@ -62,7 +64,7 @@ class UserModel extends Model implements DatabaseInterface
 
     public function delete($id)
     {
-        $stmt = $this->db->prepare('Delete From User where userId = :id');
+        $stmt = $this->db->prepare('Delee From User where userId = :id');
         $stmt->bind_param(":id",$id);
         return $stmt->execute();
     }
