@@ -31,7 +31,7 @@ class ImageModel extends Model implements DatabaseInterface
      * @param String $thumbnail
      * @param String $name
      * @param int $galleryId
-     * @param array $tags
+     * @param array $tags Tag
      * @return Image
      */
     public function create($file, $thumbnail, $name, $galleryId, $tags = array()){

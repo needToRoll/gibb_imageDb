@@ -13,7 +13,6 @@ class User
     private $mail;
     private $pw;
     private $isAdmin;
-    private $galleries;
 
     /**
      * User constructor.
@@ -23,36 +22,16 @@ class User
      * @param $mail
      * @param $pw
      * @param $isAdmin
-     * @param array $galleries Gallery
      */
-    public function __construct($id, $username, $mail, $pw, $isAdmin, $galleries = array())
+    public function __construct($id, $username, $mail, $pw, $isAdmin)
     {
         $this->id = $id;
         $this->username = $username;
         $this->mail = $mail;
         $this->pw = $pw;
         $this->isAdmin = $isAdmin;
-        $this->galleries = $galleries;
-    }
-
-    /**
-     * @return array
-     */
-    public function getGalleries()
-    {
-        return $this->galleries;
-    }
-
-    /**
-     * @param array $galleries
-     */
-    public function setGalleries($galleries)
-    {
-        $this->galleries = $galleries;
     }
     
-    
-
     /**
      * @return mixed
      */

@@ -12,7 +12,7 @@ class Gallery
     private $name;
     private $images;
     private $readUsers;
-    
+    private $owner;
     
 
     /**
@@ -20,14 +20,16 @@ class Gallery
      * @param $id
      * @param $name
      * @param $images
+     * @param $owner User
      * @param $readUsers Users with read access
      */
-    public function __construct($id, $name, $images, $readUsers)
+    public function __construct($id, $name, $images, $owner, $readUsers)
     {
         $this->id = $id;
         $this->name = $name;
         $this->images = $images;
         $this->readUsers = $readUsers;
+        $this->owner = $owner;
     }
 
     /**
@@ -63,7 +65,7 @@ class Gallery
     }
 
     /**
-     * @return array
+     * @return array Image
      */
     public function getImages()
     {
@@ -77,6 +79,24 @@ class Gallery
     {
         $this->images = $images;
     }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+    
+    
 
     /**
      * @return Users

@@ -13,6 +13,8 @@ class GalleryModel extends Model implements DatabaseInterface
 {
 
     private $imageModel;
+    private $accessModel;
+    
 
     /**
      * GalleryModel constructor.
@@ -20,22 +22,34 @@ class GalleryModel extends Model implements DatabaseInterface
     public function __construct()
     {
         $this->imageModel = new ImageModel();
+        $this->accessModel = new AccessModel();
     }
 
-    public function create($name, $images = array(),$readers = array())
+    /**
+     * @param $name
+     * @param $owner User
+     * @param array $images Image
+     * @param array $readers User
+     * @return Gallery
+     */
+    public function create($name, $owner, $images = array(), $readers = array()) //TODO implement access
     {
         $stmt = $this->db->prepare("INSERT INTO Gallery (NAME) VALUES (?)");
         $stmt->bind_param('s',$name);
         if ($stmt->execute()) {
             $galleryId = $this->db->insert_id();
-            /**
-             * @var images array Image
-             */
+            $this->accessModel->setOwner($owner->getId(),$galleryId);
+            
+            foreach($readers as $reader){
+                $userId = $reader->getId();
+                $this->accessModel->grantReadAccess($userId,$galleryId);
+            }
+            
             foreach($images as $image){
                 $image->setId($galleryId);
                  $this->imageModel->save($image);
             }
-            return new Gallery($galleryId,$name,$images,$readers); //TODO: Implement Readers
+            return new Gallery($galleryId,$name,$images, $owner,$readers);
         }
 
     }
@@ -46,26 +60,38 @@ class GalleryModel extends Model implements DatabaseInterface
      */
     public function save($object)
     {
-        return $this->create($object->getName(), $object->getImages(), $object->getReadUsers());
+        return $this->create($object->getName(),$object->getOwner(), $object->getImages(), $object->getReadUsers());
     }
 
     public function readById($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM GALLERY where galleryId = :id");
-        $stmt->bind_param($id);
+        $stmt->bind_param(":id",$id);
         if ($stmt->execute()) {
-            
+            $readers = $this->accessModel->getReadUsers($id);
+            $owner = $this->accessModel->getOwner($id);
         }
     }
 
-    public function readByUser()
+    public function readByUser($userId)
     {
-        //TODO: Implement readByUser() method.
+        return $this->accessModel->getOwnGalleries($userId);
     }
 
     public function readAll()
     {
-        // TODO: Implement readAll() method.
+        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery");
+        $result = array();
+        if ($stmt->execute()) {
+            while ($row = $stmt->get_result()->fetch_assoc()){
+                $id = $row["galleryId"];
+                $name = $row["name"];
+                $readers = $this->accessModel->getReadUsers($id);
+                $owner = $this->accessModel->getOwner($id);
+                $images = $this->imageModel->readByGallery($id);
+                $result[] = new Gallery($id,$name,$images,$owner,$readers);
+            }
+        }
     }
 
     public function update($object)
@@ -75,7 +101,9 @@ class GalleryModel extends Model implements DatabaseInterface
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $stmt = $this->db->prepare("DELETE FROM imagedb.gallery WHERE galleryId = :id");
+        $stmt->bind_param(":id",$id);
+        return $stmt->execute();
     }
 
 }
