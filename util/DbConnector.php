@@ -9,10 +9,11 @@
 class DbConnector
 {
     private static $connection;
-    
-    public static function getConnection(){
-        if(!isset(self::$connection)){
-            self::$connection = new mysqli("localhost","root", "1234", "imageDb",3306);
+
+    public static function getConnection()
+    {
+        if ((self::$connection) == null) {
+            self::$connection = new mysqli("localhost", "root", "1234", "imageDb", 3306);
         }
         return self::$connection;
     }

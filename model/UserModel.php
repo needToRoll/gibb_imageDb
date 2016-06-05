@@ -74,15 +74,14 @@ class UserModel extends Model implements DatabaseInterface
 
     public function checkLogin($username, $pw)
     {
-        $stmt = $this->db->prepare('SELECT userId FROM imagedb.user WHERE mail = ? OR username = ?');
+        $stmt = $this->db->prepare('SELECT userId, password FROM imagedb.user WHERE mail = ? OR username = ?');
         $stmt->bind_param("ss", $username, $username);
-        $userId = -1;
         if ($stmt->execute()) {
-            $userObject = $this->readById($stmt->get_result()->fetch_assoc()["userId"]);
-            if (password_verify($userObject->getPw(), $pw)) {
-                $userId = $userObject->getId();
+            $result = $stmt->get_result()->fetch_assoc();
+            if (password_verify($result["password"], $pw)) {
+                return $result["userId"];
             }
         }
-        return $userId;
+        return -1;
     }
 }

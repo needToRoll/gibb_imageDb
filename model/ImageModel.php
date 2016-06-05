@@ -24,6 +24,7 @@ class ImageModel extends Model implements DatabaseInterface
      */
     public function __construct()
     {
+        parent::__construct();
         $this->tagModel = new TagModel();
     }
 
@@ -71,7 +72,7 @@ class ImageModel extends Model implements DatabaseInterface
 
     public function readAll()
     {
-        $stmt = $this->db->prepare("SELECT * FROM IMAGE");
+        $stmt = $this->db->prepare("SELECT * FROM imagedb.image");
         $result = array();
         if ($stmt->execute()) {
             while($row = $stmt->get_result()->fetch_assoc()){
@@ -85,8 +86,8 @@ class ImageModel extends Model implements DatabaseInterface
     }
     
     public function readByGallery($galleryId){
-        $stmt = $this->db->prepare('Select * From Image where gallery_galleryId = :gallery');
-        $stmt->bind_param(':galleryId',$galleryId);
+        $stmt = $this->db->prepare('Select * From imagedb.image where gallery_galleryId = ?');
+        $stmt->bind_param('i',$galleryId);
         $result = array();
         if ($stmt->execute()) {
             while($row = $stmt->get_result()->fetch_assoc()){
@@ -107,8 +108,8 @@ class ImageModel extends Model implements DatabaseInterface
 
     public function delete($id)
     {
-        $stmt = $this->db->prepare("delete from image WHERE imageId = :id");
-        $stmt->bind_param(":id",$id);
+        $stmt = $this->db->prepare("delete from image WHERE imageId = ?");
+        $stmt->bind_param("i",$id);
         return $stmt->execute();
     }
 }

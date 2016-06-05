@@ -16,16 +16,15 @@ class AccessModel extends Model
 {
     private $userModel;
     private $imageModel;
-    private $galleryModel;
 
     /**
      * AccessModel constructor.
      */
     public function __construct()
     {
+        parent::__construct();
         $this->userModel = new UserModel();
         $this->imageModel = new ImageModel();
-        $this->galleryModel = new GalleryModel();
     }
 
 
@@ -46,12 +45,15 @@ class AccessModel extends Model
 
     public function getRelatedGalleries($userId, $isOwnerRelationship)
     {
-        $stmt = $this->db->prepare("SELECT gallery_galleryId FROM imagedb.gallery_user_rolle WHERE user_userId  = ? AND isOwner = ?");
+        $stmt = $this->db->prepare("SELECT gallery_galleryId ,name FROM imagedb.gallery_user_rolle JOIN imagedb.gallery ON gallery_user_rolle.gallery_galleryId = gallery.galleryId WHERE user_userId  = ? AND isOwner = ?");
         $stmt->bind_param('ii', $userId, $isOwnerRelationship);
         $result = array();
         if ($stmt->execute()) {
             while ($row = $stmt->get_result()->fetch_assoc()) {
-                $result[] = $this->galleryModel->readById($row["gallery_galleryId"]);
+                $gId = $row["gallery_galleryId"];
+                $gName = $row["name"];
+                $images = $this->imageModel->readByGallery($gId);
+                $result[] = new Gallery($gId,$gName,$images,$this->getOwner($gId),$this->getReadUsers($gId));
             }
             return $result;
         }

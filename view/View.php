@@ -32,8 +32,8 @@ class View
     public function render(){
         // print "rendering starded";
         $parent_view = $this;
-        foreach ($this->arguments as $arg){
-            ${$arg} = $arg;
+        foreach ($this->arguments as $key => $arg){
+            ${$key} = $arg;
         }
         if (file_exists($this->template)) {
             require_once $this->template;

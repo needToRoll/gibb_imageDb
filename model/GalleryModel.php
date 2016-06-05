@@ -22,6 +22,7 @@ class GalleryModel extends Model implements DatabaseInterface
      */
     public function __construct()
     {
+        parent::__construct();
         $this->imageModel = new ImageModel();
         $this->accessModel = new AccessModel();
     }
@@ -66,7 +67,7 @@ class GalleryModel extends Model implements DatabaseInterface
 
     public function readById($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM GALLERY where galleryId = :id");
+        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery where galleryId = :id");
         $stmt->bind_param(":id",$id);
         if ($stmt->execute()) {
             $readers = $this->accessModel->getReadUsers($id);

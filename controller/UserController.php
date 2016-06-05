@@ -24,12 +24,12 @@ class UserController
     {
         $userName = $_POST["email"];
         $pw = $_POST["password"];
-        $userId =$this->userModel->checkLogin($userName, $pw);
-        if ($userId!=-1) {
+        $userId = $this->userModel->checkLogin($userName, $pw);
+        if ($userId) {
             $_SESSION["userId"] = $userId;
             header("Location: /Gallery/showOverview");
-        } ELSE {
-            print "BUG";
+        } else {
+            header("Location: /");
         }
     }
 
@@ -37,10 +37,10 @@ class UserController
     {
         $userIdentification = $_POST["email"];
         $pw = $this->hashPw($_POST["password"]);
-        $user = $this->userModel->create($userIdentification,$userIdentification,$pw,false);
+        $user = $this->userModel->create($userIdentification, $userIdentification, $pw, false);
         $_SESSION["userId"] = $user->getId();
         header("Location: /Gallery/showOverview");
-        
+
     }
 
     public function hashPw($pw)
