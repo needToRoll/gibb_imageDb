@@ -1,5 +1,5 @@
 <?php
-require "\\Controller\\Dispatcher.php";
+require_once "/Controller/Dispatcher.php";
 /**  
  * Created by PhpStorm.
  * User: bbuerf

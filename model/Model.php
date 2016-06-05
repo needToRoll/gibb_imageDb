@@ -1,5 +1,5 @@
 <?php
-
+require_once "/util/DbConnector.php";
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -15,7 +15,7 @@ class Model
      */
     public function __construct()
     {
-        $this->db = new mysqli("localhost","root", "1234", "imageDb",3306);
+        $this->db = DbConnector::getConnection();
     }
 
 

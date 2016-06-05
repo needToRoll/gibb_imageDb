@@ -1,6 +1,7 @@
 <?php
-require "entities/User.php";
-require "Model.php";
+require_once "entities/User.php";
+require_once "Model.php";
+require_once "DatabaseInterface.php";
 
 
 /**
@@ -15,11 +16,13 @@ class UserModel extends Model implements DatabaseInterface
     public function create($username, $mail, $pw, $isAdmin)
     {
         $stmt = $this->db->prepare('INSERT INTO user (username, mail, password, isAdmin) VALUES (?,?,?,?)');
-        $stmt->bindParam('sssb', $username, $mail, $pw, $isAdmin);
-        $stmt->execute();
-        $id = $this->db->insert_id();
-
-        return new User($id, $username, $mail, $pw, $isAdmin);
+        $stmt->bind_param('sssi', $username, $mail, $pw, $isAdmin);
+        if ($stmt->execute()) {
+            $id = $this->db->insert_id;
+            return new User($id, $username, $mail, $pw, $isAdmin);
+        }
+        print $stmt->error;
+        return null;
     }
 
     /**
@@ -34,8 +37,8 @@ class UserModel extends Model implements DatabaseInterface
 
     public function readById($id)
     {
-        $stmt = $this->db->prepare('SELECT * FROM USER WHERE userId = :id');
-        $stmt->bind_param(":id", $id);
+        $stmt = $this->db->prepare('SELECT * FROM USER WHERE userId = ?');
+        $stmt->bind_param("s", $id);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_assoc();
             return new User($id, $result["username"], $result["mail"], $result["password"], $result['isAdmin']);
@@ -64,19 +67,22 @@ class UserModel extends Model implements DatabaseInterface
 
     public function delete($id)
     {
-        $stmt = $this->db->prepare('DELETE From User where userId = :id');
+        $stmt = $this->db->prepare('DELETE FROM User WHERE userId = :id');
         $stmt->bind_param(":id", $id);
         return $stmt->execute();
     }
 
     public function checkLogin($username, $pw)
     {
-        $stmt = $this->db->prepare('select userId from imagedb.user where mail = :username OR username = :username');
-        $stmt->bind_param(":username",$username);
+        $stmt = $this->db->prepare('SELECT userId FROM imagedb.user WHERE mail = ? OR username = ?');
+        $stmt->bind_param("ss", $username, $username);
+        $userId = -1;
         if ($stmt->execute()) {
             $userObject = $this->readById($stmt->get_result()->fetch_assoc()["userId"]);
-            return ($userObject->getPw() == $pw);
+            if (password_verify($userObject->getPw(), $pw)) {
+                $userId = $userObject->getId();
+            }
         }
-        return false;
+        return $userId;
     }
 }

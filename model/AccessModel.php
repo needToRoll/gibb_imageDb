@@ -1,9 +1,11 @@
 <?php
-require "entities/User.php";
-require "Model.php";
-require "GalleryModel.php";
-require "UserModel.php";
-require "entities/Gallery.php";
+require_once "entities/User.php";
+require_once "Model.php";
+require_once "GalleryModel.php";
+require_once "UserModel.php";
+require_once "entities/Gallery.php";
+require_once "DatabaseInterface.php";
+
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -27,25 +29,28 @@ class AccessModel extends Model
     }
 
 
-    public function getReadUsers($galleryId){
-        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle where gallery_galleryId = ? AND isOwner = FALSE ");
-        $stmt->bind_param('i',$galleryId);
+    public function getReadUsers($galleryId)
+    {
+        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = FALSE ");
+        $stmt->bind_param('i', $galleryId);
         $result = array();
         if ($stmt->execute()) {
-            while($row = $stmt->get_result()->fetch_assoc()){
+            while ($row = $stmt->get_result()->fetch_assoc()) {
                 $result[] = $this->userModel->readById($row["user_userId"]);
             }
             return $result;
         }
         return null;
     }
-    
-    public function getOwnGalleries($userId){
-        $stmt = $this->db->prepare("SELECT gallery_galleryId FROM imagedb.gallery_user_rolle where user_userId  = ? AND isOwner = TRUE");
-        $stmt->bind_param('i',$userId);
+
+
+    public function getRelatedGalleries($userId, $isOwnerRelationship)
+    {
+        $stmt = $this->db->prepare("SELECT gallery_galleryId FROM imagedb.gallery_user_rolle WHERE user_userId  = ? AND isOwner = ?");
+        $stmt->bind_param('ii', $userId, $isOwnerRelationship);
         $result = array();
         if ($stmt->execute()) {
-            while($row = $stmt->get_result()->fetch_assoc()){
+            while ($row = $stmt->get_result()->fetch_assoc()) {
                 $result[] = $this->galleryModel->readById($row["gallery_galleryId"]);
             }
             return $result;
@@ -53,23 +58,37 @@ class AccessModel extends Model
         return null;
     }
 
-    private function grantAccess($userId, $galleryId, $isOwner){
+    public function getOwnGalleries($userId)
+    {
+        return $this->getRelatedGalleries($userId, true);
+    }
+
+    public function getReadGalleries($userId)
+    {
+        return $this->getRelatedGalleries($userId, false);
+    }
+
+    private function grantAccess($userId, $galleryId, $isOwner)
+    {
         $stmt = $this->db->prepare("INSERT INTO imagedb.gallery_user_rolle (isOwner, user_userId, gallery_galleryId) VALUES (?, ?,?)");
-        $stmt->bind_param('bii',$isOwner, $userId, $galleryId);
+        $stmt->bind_param('bii', $isOwner, $userId, $galleryId);
         return $stmt->execute();
     }
-    
-    public function grantReadAccess($userId, $galleryId){
-        return $this->grantAccess($userId,$galleryId,false);
+
+    public function grantReadAccess($userId, $galleryId)
+    {
+        return $this->grantAccess($userId, $galleryId, false);
     }
-    
-    public function setOwner($userId,$galleryId){
-        return $this->grantAccess($userId,$galleryId,true);
+
+    public function setOwner($userId, $galleryId)
+    {
+        return $this->grantAccess($userId, $galleryId, true);
 
     }
-    
-    public function getOwner($galleryId){
-        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle where gallery_galleryId = ? and isOwner = TRUE");
+
+    public function getOwner($galleryId)
+    {
+        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = TRUE");
         $stmt->bind_param('i', $galleryId);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_assoc();
@@ -77,6 +96,6 @@ class AccessModel extends Model
             return $this->userModel->readById($userId);
         }
         return null;
-        
+
     }
 }

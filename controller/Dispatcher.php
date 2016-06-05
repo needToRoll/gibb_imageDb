@@ -23,8 +23,8 @@ class Dispatcher
         $uri = $_SERVER["REQUEST_URI"];
         $arguments = explode("/",$uri);
         $controller = (!empty($arguments[1]) ? ucfirst($arguments[1]) : "Default")."Controller";
-        $action = (!empty($arguments[2])? $arguments[2]:"showHome");
-        require "/controller/$controller.php";
+        $action = (!empty($arguments[2])? strtolower($arguments[2]):"showHome");
+        require_once "/controller/$controller.php";
         $controllerObject = new $controller();
         $controllerObject->$action();
 

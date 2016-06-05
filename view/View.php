@@ -32,8 +32,11 @@ class View
     public function render(){
         // print "rendering starded";
         $parent_view = $this;
+        foreach ($this->arguments as $arg){
+            ${$arg} = $arg;
+        }
         if (file_exists($this->template)) {
-            require $this->template;
+            require_once $this->template;
         } else {
             print ("template nicht gefunden");
         }
@@ -42,7 +45,7 @@ class View
     public function insideRender($innerTemplate, $args = array()){
         $innerView = new View($innerTemplate,$args);
         $innerView->render();
-        // print "innter Rendering";
+
         
     }
 

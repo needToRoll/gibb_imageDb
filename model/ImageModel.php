@@ -1,8 +1,10 @@
 <?php
 
-require "/model/TagModel.php";
-require "/model/entities/Image.php";
-require "/model/Model.php";
+require_once "/model/TagModel.php";
+require_once "/model/entities/Image.php";
+require_once "/model/Model.php";
+require_once "DatabaseInterface.php";
+
 
 /**
  * Created by PhpStorm.
@@ -42,7 +44,7 @@ class ImageModel extends Model implements DatabaseInterface
             $this->tagModel->save($tag);
         }
         if($stmt->execute()){
-            return new Image($this->db->insert_id(),$file,$thumbnail,$name,$tags);
+            return new Image($this->db->insert_id,$file,$thumbnail,$name,$tags);
         }
     }
 

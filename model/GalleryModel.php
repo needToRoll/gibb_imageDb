@@ -1,7 +1,8 @@
 <?php
-require "/model/Model.php";
-require "/model/ImageModel.php";
-require "/model/entities/Gallery.php";
+require_once "/model/Model.php";
+require_once "/model/ImageModel.php";
+require_once "/model/entities/Gallery.php";
+require_once "DatabaseInterface.php";
 
 /**
  * Created by PhpStorm.
@@ -37,7 +38,7 @@ class GalleryModel extends Model implements DatabaseInterface
         $stmt = $this->db->prepare("INSERT INTO Gallery (NAME) VALUES (?)");
         $stmt->bind_param('s',$name);
         if ($stmt->execute()) {
-            $galleryId = $this->db->insert_id();
+            $galleryId = $this->db->insert_id;
             $this->accessModel->setOwner($owner->getId(),$galleryId);
             
             foreach($readers as $reader){

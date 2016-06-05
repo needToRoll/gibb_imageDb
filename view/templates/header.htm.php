@@ -5,7 +5,7 @@
  * Date: 04.06.2016
  * Time: 11:23
  */
-
+require_once "/model/UserModel.php";
 ?>
 <html lang="en">
 <head>
@@ -35,12 +35,12 @@
                         $userModel = new UserModel();
                         $user = $userModel->readById($_SESSION["userId"]);
                         if (isset($user)) {
-                            echo "<li><a>Hallo " . User::getUserById($_SESSION['userId'])->getUsername() . "</a></li></ul><ul class='nav navbar-nav navbar-right'>" .
-                                "<li><a href='User/Logout'>Logout</a></li>";
+                            echo "<li><a>Hallo " .$userModel->readById($_SESSION['userId'])->getUsername() . "</a></li></ul><ul class='nav navbar-nav navbar-right'>" .
+                                "<li><a href='/User/Logout'>Logout</a></li>";
                         }
                     } else {
                         echo "<li><a>Hallo Gast</a></li></ul><ul class='nav navbar-nav navbar-right'>" .
-                            "<li><a href='Default/showHome'>Registrierung / Login</a></li>";
+                            "<li><a href='/Default/showHome'>Registrierung / Login</a></li>";
                     }
                     ?>
                 </ul>

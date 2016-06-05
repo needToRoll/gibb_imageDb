@@ -1,5 +1,6 @@
 <?php
-
+require_once "DatabaseInterface.php";
+require_once "entities/Tag.php";
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -14,7 +15,7 @@ class TagModel extends Model implements DatabaseInterface
         $stmt = $this->db->prepare("INSERT INTO imagedb.tag (name) VALUES (?)");
         $stmt->bind_param('s',$tagName);
         if($stmt->execute()){
-            $tagId = $this->db->insert_id();
+            $tagId = $this->db->insert_id;
             $statement = $this->db->prepare("INSERT INTO imagedb.image_tag (image_imageId, tag_tagId) VALUES (?,?)");
             $statement->bind_param('ii',$imageId,$tagId);
             if($statement->execute()){

@@ -111,8 +111,5 @@ class User
     {
         $this->isAdmin = $isAdmin;
     }
-    
-    
-    
-    
+   
 }
