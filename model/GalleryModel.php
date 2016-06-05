@@ -1,7 +1,7 @@
 <?php
-require "\\model\\Model.php";
-require "\\model\\ImageModel.php";
-require "\\model\\entities\\Gallery.php";
+require "/model/Model.php";
+require "/model/ImageModel.php";
+require "/model/entities/Gallery.php";
 
 /**
  * Created by PhpStorm.

@@ -18,7 +18,7 @@ class View
      */
     public function __construct($template, $arguments = array())
     {
-        $this->template = __DIR__."\\templates\\".$template.".php";
+        $this->template = __DIR__."/templates/".$template.".php";
         $this->arguments = $arguments;
     }
 
@@ -34,7 +34,6 @@ class View
         $parent_view = $this;
         if (file_exists($this->template)) {
             require $this->template;
-            print $this->template;
         } else {
             print ("template nicht gefunden");
         }

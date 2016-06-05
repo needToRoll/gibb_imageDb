@@ -1,9 +1,9 @@
 <?php
-require "entities\\User.php";
+require "entities/User.php";
 require "Model.php";
 require "GalleryModel.php";
 require "UserModel.php";
-require "entities\\Gallery.php";
+require "entities/Gallery.php";
 /**
  * Created by PhpStorm.
  * User: bbuerf

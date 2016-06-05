@@ -11,9 +11,16 @@ require "/view/View.php";
 
 class DefaultController
 {
-    public function showHome(){
+    public function showHome()
+    {
         $view = new View("home.htm");
         $view->render();
         // print "show Home called";
+    }
+
+    public function showOverview()
+    {
+        if(isset($_SESSION['userId'])){
+        }
     }
 }

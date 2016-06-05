@@ -1,8 +1,8 @@
 <?php
 
-require "\\model\\TagModel.php";
-require "\\model\\entities\\Image.php";
-require "\\model\\Model.php";
+require "/model/TagModel.php";
+require "/model/entities/Image.php";
+require "/model/Model.php";
 
 /**
  * Created by PhpStorm.

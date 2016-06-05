@@ -1,6 +1,7 @@
 <?php
 require
 session_start();
+
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -15,7 +16,6 @@ class UserController
     public function __construct()
     {
         $this->userModel = new UserModel();
-        
     }
     
     
