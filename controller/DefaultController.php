@@ -8,19 +8,21 @@
  */
 
 require_once "/view/View.php";
+require_once "/controller/GalleryController.php";
 
 class DefaultController
 {
+    
+    
+    
     public function showHome()
     {
-        $view = new View("home.htm");
-        $view->render();
-        // print "show Home called";
-    }
-
-    public function showOverview()
-    {
-        if(isset($_SESSION['userId'])){
+        if (!isset($_SESSION["userId"])) {
+            $view = new View("home.htm");
+            $view->render();
+        } else {
+            header("Location: /gallery/showOverview");
         }
+        // print "show Home called";
     }
 }

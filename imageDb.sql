@@ -35,7 +35,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `imageDb`.`gallery` ;
 
 CREATE TABLE IF NOT EXISTS `imageDb`.`gallery` (
-  `galleryId` INT NOT NULL,
+  `galleryId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NOT NULL,
   PRIMARY KEY (`galleryId`))
 ENGINE = InnoDB;

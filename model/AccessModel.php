@@ -49,7 +49,8 @@ class AccessModel extends Model
         $stmt->bind_param('ii', $userId, $isOwnerRelationship);
         $result = array();
         if ($stmt->execute()) {
-            while ($row = $stmt->get_result()->fetch_assoc()) {
+            $resultSet = $stmt->get_result();
+            while ($row = $resultSet->fetch_assoc()) {
                 $gId = $row["gallery_galleryId"];
                 $gName = $row["name"];
                 $images = $this->imageModel->readByGallery($gId);
@@ -62,24 +63,24 @@ class AccessModel extends Model
 
     public function getOwnGalleries($userId)
     {
-        return $this->getRelatedGalleries($userId, true);
+        return $this->getRelatedGalleries($userId, 1);
     }
 
     public function getReadGalleries($userId)
     {
-        return $this->getRelatedGalleries($userId, false);
+        return $this->getRelatedGalleries($userId, 0);
     }
 
     private function grantAccess($userId, $galleryId, $isOwner)
     {
         $stmt = $this->db->prepare("INSERT INTO imagedb.gallery_user_rolle (isOwner, user_userId, gallery_galleryId) VALUES (?, ?,?)");
-        $stmt->bind_param('bii', $isOwner, $userId, $galleryId);
+        $stmt->bind_param('iii', $isOwner, $userId, $galleryId);
         return $stmt->execute();
     }
 
     public function grantReadAccess($userId, $galleryId)
     {
-        return $this->grantAccess($userId, $galleryId, false);
+        return $this->grantAccess($userId, $galleryId, 0);
     }
 
     public function setOwner($userId, $galleryId)

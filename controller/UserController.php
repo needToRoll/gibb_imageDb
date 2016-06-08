@@ -24,11 +24,11 @@ class UserController
         $userName = $_POST["email"];
         $pw = $_POST["password"];
         $userId = $this->userModel->checkLogin($userName, $pw);
-        if ($userId) {
+        if ($userId != -1) {
             $_SESSION["userId"] = $userId;
             header("Location: /Gallery/showOverview");
         } else {
-            header("Location: /");
+            var_dump($userId);
         }
     }
 
@@ -40,6 +40,11 @@ class UserController
         $_SESSION["userId"] = $user->getId();
         header("Location: /Gallery/showOverview");
 
+    }
+
+    public function logout(){
+        session_destroy();
+        header("Location: /");
     }
 
     public function hashPw($pw)

@@ -36,7 +36,7 @@ class GalleryModel extends Model implements DatabaseInterface
      */
     public function create($name, $owner, $images = array(), $readers = array()) //TODO implement access
     {
-        $stmt = $this->db->prepare("INSERT INTO Gallery (NAME) VALUES (?)");
+        $stmt = $this->db->prepare("INSERT INTO imagedb.gallery (name) VALUES (?)");
         $stmt->bind_param('s',$name);
         if ($stmt->execute()) {
             $galleryId = $this->db->insert_id;
@@ -52,6 +52,8 @@ class GalleryModel extends Model implements DatabaseInterface
                  $this->imageModel->save($image);
             }
             return new Gallery($galleryId,$name,$images, $owner,$readers);
+        } else {
+            echo $stmt->error;
         }
 
     }

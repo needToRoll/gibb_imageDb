@@ -26,8 +26,11 @@ class Dispatcher
         $action = (!empty($arguments[2])? strtolower($arguments[2]):"showHome");
         require_once "/controller/$controller.php";
         $controllerObject = new $controller();
-        $controllerObject->$action();
-
-
+        If(sizeof($arguments)>3) {
+            $args = array_slice($arguments, 3);
+            $controllerObject->$action($args);
+        } else {
+            $controllerObject->$action();
+        }
     }
 }

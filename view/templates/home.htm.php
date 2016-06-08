@@ -51,7 +51,6 @@ $parent_view->insideRender("header.htm");
         </div>
     </div>
 
-</body>
 <?php
 $parent_view->insideRender("footer.htm");
 ?>

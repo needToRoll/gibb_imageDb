@@ -9,4 +9,7 @@
 <footer>
     <p>by BBUERF</p>
 </footer>
+<script src="https://cdn.peg.nu/lib/js/jquery2/jquery.min.js"></script>
+<script src="https://cdn.peg.nu/lib/js/bootstrap/bootstrap.min.js"></script>
+</body>
 </html>

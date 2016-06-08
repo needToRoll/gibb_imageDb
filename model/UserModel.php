@@ -78,10 +78,11 @@ class UserModel extends Model implements DatabaseInterface
         $stmt->bind_param("ss", $username, $username);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_assoc();
-            if (password_verify($result["password"], $pw)) {
+            if (password_verify($pw,$result["password"])) {
                 return $result["userId"];
             }
         }
+        echo $stmt->error;
         return -1;
     }
 }

@@ -7,6 +7,7 @@
  */
 require_once "/model/UserModel.php";
 ?>
+<!doctype html>
 <html lang="en">
 <head>
     <link href="/yeti/css/bootstrap.min.css" rel="stylesheet">
