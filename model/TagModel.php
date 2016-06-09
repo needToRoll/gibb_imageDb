@@ -1,6 +1,7 @@
 <?php
 require_once "DatabaseInterface.php";
 require_once "entities/Tag.php";
+require_once "Model.php";
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -26,11 +27,12 @@ class TagModel extends Model implements DatabaseInterface
 
     public function readByImage($imageId)
     {
-        $stmt = $this->db->prepare("SELECT image_imageId FROM imagedb.image_tag WHERE image_imageId = :id");
-        $stmt->bind_param(":id", $imageId);
+        $stmt = $this->db->prepare("SELECT image_imageId FROM imagedb.image_tag WHERE image_imageId = ?");
+        $stmt->bind_param("i", $imageId);
         $result = array();
         if ($stmt->execute()) {
-            while ($row = $stmt->get_result()->fetch_assoc()) {
+            $stmtResult = $stmt->get_result();
+            while ($row = $stmtResult->fetch_assoc()) {
                 $result[] = $this->readById($row['image_imageId']);
 
             }

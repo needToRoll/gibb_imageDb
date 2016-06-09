@@ -32,21 +32,6 @@ class Gallery
         $this->owner = $owner;
     }
 
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param integer $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string
@@ -65,7 +50,7 @@ class Gallery
     }
 
     /**
-     * @return array Image
+     * @return Image[]
      */
     public function getImages()
     {
@@ -95,11 +80,9 @@ class Gallery
     {
         $this->owner = $owner;
     }
-    
-    
 
     /**
-     * @return Users
+     * @return User[]
      */
     public function getReadUsers()
     {
@@ -107,11 +90,27 @@ class Gallery
     }
 
     /**
-     * @param Users $readUsers
+     * @param User[] $readUsers
      */
     public function setReadUsers($readUsers)
     {
         $this->readUsers = $readUsers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     

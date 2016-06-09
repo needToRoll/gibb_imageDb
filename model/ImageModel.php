@@ -46,7 +46,7 @@ class ImageModel extends Model implements DatabaseInterface
         }
         if($stmt->execute()){
             return new Image($this->db->insert_id,$file,$thumbnail,$name,$tags);
-        }
+        } else echo $stmt->error;
     }
 
     /**
@@ -90,7 +90,8 @@ class ImageModel extends Model implements DatabaseInterface
         $stmt->bind_param('i',$galleryId);
         $result = array();
         if ($stmt->execute()) {
-            while($row = $stmt->get_result()->fetch_assoc()){
+            $stmtResult = $stmt->get_result();
+            while($row = $stmtResult->fetch_assoc()){
                 $tags = array();
                 $tags = $this->tagModel->readByImage($row["imageId"]);
                 $result[] = new Image($row["imageId"],$row["file"],$row["thumbnail"],$row['name'],$tags);

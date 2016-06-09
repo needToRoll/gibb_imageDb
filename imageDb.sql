@@ -48,8 +48,8 @@ DROP TABLE IF EXISTS `imageDb`.`image` ;
 
 CREATE TABLE IF NOT EXISTS `imageDb`.`image` (
   `imageId` INT NOT NULL AUTO_INCREMENT,
-  `file` VARCHAR(200) NULL,
-  `thumbnail` VARCHAR(200) NULL,
+  `file` VARCHAR(300) NULL,
+  `thumbnail` VARCHAR(300) NULL,
   `name` VARCHAR(200) NULL,
   `gallery_galleryId` INT NOT NULL,
   PRIMARY KEY (`imageId`),

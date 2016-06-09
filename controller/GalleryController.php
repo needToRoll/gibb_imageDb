@@ -37,23 +37,25 @@ class GalleryController
         $viewOptions = array();
         $viewOptions["ownGalleries"] = $own;
         $viewOptions["readGalleries"] = $read;
-        $view = new View("overview.htm",$viewOptions);
+        $view = new View("overview.htm", $viewOptions);
         $view->render();
     }
 
-    public function create(){
+    public function create()
+    {
         $galleryName = $_POST["name"];
         $owner = $this->userModel->readById($_SESSION["userId"]);
-        var_dump($owner);
-        var_dump($this->galleryModel->create($galleryName,$owner));
+
+        $this->galleryModel->create($galleryName, $owner);
         $this->showOverview();
     }
-    
-    public function showGallery($args){
-       $targetId = $args[0];
+
+    public function showGallery($args)
+    {
+        $targetId = $args[0];
         $viewOptions = array();
         $viewOptions["gallery"] = $this->galleryModel->readById($targetId);
-        $view = new View();
-        $view->render("galleryDetail.htm", $viewOptions);
+        $view = new View("galleryDetail.htm", $viewOptions);
+        $view->render();
     }
 }

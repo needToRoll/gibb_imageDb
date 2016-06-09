@@ -69,11 +69,18 @@ class GalleryModel extends Model implements DatabaseInterface
 
     public function readById($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery where galleryId = :id");
-        $stmt->bind_param(":id",$id);
+        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery where galleryId = ?");
+        $stmt->bind_param("i",$id);
         if ($stmt->execute()) {
-            $readers = $this->accessModel->getReadUsers($id);
-            $owner = $this->accessModel->getOwner($id);
+            if ($row = $stmt->get_result()->fetch_assoc()) {
+                $id = $row["galleryId"];
+                $name = $row["name"];
+                $readers = $this->accessModel->getReadUsers($id);
+                $owner = $this->accessModel->getOwner($id);
+                $images = $this->imageModel->readByGallery($id);
+                return new Gallery($id,$name,$images,$owner,$readers);
+            }
+
         }
     }
 
@@ -85,15 +92,16 @@ class GalleryModel extends Model implements DatabaseInterface
     public function readAll()
     {
         $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery");
-        $result = array();
+        $results = array();
         if ($stmt->execute()) {
-            while ($row = $stmt->get_result()->fetch_assoc()){
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()){
                 $id = $row["galleryId"];
                 $name = $row["name"];
                 $readers = $this->accessModel->getReadUsers($id);
                 $owner = $this->accessModel->getOwner($id);
                 $images = $this->imageModel->readByGallery($id);
-                $result[] = new Gallery($id,$name,$images,$owner,$readers);
+                $results[] = new Gallery($id,$name,$images,$owner,$readers);
             }
         }
     }

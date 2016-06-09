@@ -30,15 +30,19 @@ class AccessModel extends Model
 
     public function getReadUsers($galleryId)
     {
-        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = FALSE ");
+        var_dump($galleryId);
+        var_dump($this->db);
+        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = 0");
+        echo $this->db->error;
         $stmt->bind_param('i', $galleryId);
-        $result = array();
+        $results = array();
         if ($stmt->execute()) {
-            while ($row = $stmt->get_result()->fetch_assoc()) {
-                $result[] = $this->userModel->readById($row["user_userId"]);
+            $result = $stmt->get_result();
+            while ($row =$result->fetch_assoc()) {
+                $results[] = $this->userModel->readById($row["user_userId"]);
             }
-            return $result;
-        }
+            return $results;
+        } else echo $stmt->error;
         return null;
     }
 
@@ -54,7 +58,7 @@ class AccessModel extends Model
                 $gId = $row["gallery_galleryId"];
                 $gName = $row["name"];
                 $images = $this->imageModel->readByGallery($gId);
-                $result[] = new Gallery($gId,$gName,$images,$this->getOwner($gId),$this->getReadUsers($gId));
+                $result[] = new Gallery($gId, $gName, $images, $this->getOwner($gId), $this->getReadUsers($gId));
             }
             return $result;
         }
