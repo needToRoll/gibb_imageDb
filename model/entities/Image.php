@@ -96,7 +96,7 @@ class Image
     }
 
     /**
-     * @return mixed
+     * @return
      */
     public function getTags()
     {

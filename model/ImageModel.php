@@ -60,13 +60,14 @@ class ImageModel extends Model implements DatabaseInterface
 
     public function readById($id)
     {
-        $stmt = $this->db->prepare('SELECT * FROM image where imageId = :id');
-        $stmt->bind_param(":id",$id);
+        $stmt = $this->db->prepare('SELECT * FROM image where imageId = ?');
+        $stmt->bind_param("i",$id);
         if ($stmt->execute()) {
-            $tags = $this->tagModel->readByImage($id);
             $result = $stmt->get_result()->fetch_assoc();
+            $tags = $this->tagModel->readByImage($id);
             return new Image($result["imageId"],$result["file"],$result["thumbnail"],$result["name"],$tags);
         }
+
         return null;
     }
 

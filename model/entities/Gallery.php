@@ -18,7 +18,7 @@ class Gallery
     /**
      * Gallary constructor.
      * @param $id
-     * @param $name
+     * @param $name string
      * @param $images
      * @param $owner User
      * @param $readUsers Users with read access

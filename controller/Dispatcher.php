@@ -28,7 +28,6 @@ class Dispatcher
         $controllerObject = new $controller();
         If(sizeof($arguments)>3) {
             $args = array_slice($arguments, 3);
-            var_dump($args);
             $controllerObject->$action($args);
         } else {
             $controllerObject->$action();

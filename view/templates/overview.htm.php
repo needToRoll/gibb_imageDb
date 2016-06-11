@@ -8,8 +8,7 @@
 /**
  * @var $parent_view View
  */
-$parent_view->insideRender("header.htm");
-?>
+$parent_view->insideRender("header.htm");?>
     <div class="container">
         <h1 class="page-header">Meine Galerien
             <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#add-gallery-modal"><span
@@ -43,10 +42,13 @@ $parent_view->insideRender("header.htm");
         </div>
 
         <div class="row">
-            <div class="caption">Meine Galerien</div>
-            <?php foreach ($ownGalleries as $gallery): ?>
+            <div class=><h3>Meine Galerien</h3></div>
+            <?php foreach ($ownGalleries as $gallery):
+                /**
+                 * @var $gallery Gallery
+                 * */?>
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php $gallery->getName() ?></div>
+                    <div class="panel-heading"><?= $gallery->getName() ?></div>
                     <div class="panel-body">
                         <div class="thumbnail">
                             <img src="/data/system/default.png" alt="Gallery Preview Image">
@@ -62,7 +64,7 @@ $parent_view->insideRender("header.htm");
             <div class="caption">Für mich freigegebene Galerien</div>
             <?php foreach ($readGalleries as $gallery): ?>
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php $gallery->getName() ?></div>
+                    <div class="panel-heading"><?= $gallery->getName() ?></div>
                     <div class="panel-body">
                         <div class="thumbnail">
                             <img src="/data/system/default.png" alt="Gallery Preview Image">

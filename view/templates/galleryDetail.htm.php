@@ -11,9 +11,20 @@
  * @var $gallery Gallery
  */
 
-$parent_view->insideRender("header.htm");
-print_r($gallery) ?>
+$parent_view->insideRender("header.htm"); ?>
     <div class='container'>
+
+    <h2><?= $gallery->getName() ?></h2>
+    <div id='allImages'>
+        <?php foreach ($gallery->getImages() as $image) :?>
+            <a href="/image/showImage/<?= $image->getId() ?>">
+            <img src="<?= $image->getThumbnail()?>"/>
+            </a>
+        <?php endforeach; ?>
+    </div>
+    <div>
+        <p><br/><br/></p>
+    </div>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">Bild hinzufügen</h3>
@@ -29,15 +40,9 @@ print_r($gallery) ?>
                     <input type="text" name="imageName"/>
                 </div>
                 <input type="hidden" name="galleryId" value="<?= $gallery->getId() ?>">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Hinzufügen</button>
             </form>
         </div>
-    </div>
-    <h2><?= $gallery->getName() ?></h2>
-    <div id='allImages'>
-        <?php foreach ($gallery->getImages() as $image) : ?>
-            <img src="<?= $image->getThumbnail() ?>"/>
-        <?php endforeach; ?>
     </div>
 
 <?php $parent_view->insideRender("footer.htm"); ?>

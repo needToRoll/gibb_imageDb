@@ -11,6 +11,7 @@ require_once "/model/UserModel.php";
 <html lang="en">
 <head>
     <link href="/yeti/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/yeti/css/myStyle.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>ImageDB</title>
 </head>
@@ -30,7 +31,7 @@ require_once "/model/UserModel.php";
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Übersicht<span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="/">Übersicht<span class="sr-only">(current)</span></a></li>
                     <?php
                     If (isset($_SESSION["userId"])) {
                         $userModel = new UserModel();

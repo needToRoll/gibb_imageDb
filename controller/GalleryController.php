@@ -32,7 +32,6 @@ class GalleryController
     {
         print $_SESSION["userId"];
         $own = $this->accessModel->getOwnGalleries(($_SESSION['userId']));
-        var_dump($own);
         $read = $this->accessModel->getReadGalleries($_SESSION['userId']);
         $viewOptions = array();
         $viewOptions["ownGalleries"] = $own;
@@ -45,7 +44,6 @@ class GalleryController
     {
         $galleryName = $_POST["name"];
         $owner = $this->userModel->readById($_SESSION["userId"]);
-
         $this->galleryModel->create($galleryName, $owner);
         $this->showOverview();
     }

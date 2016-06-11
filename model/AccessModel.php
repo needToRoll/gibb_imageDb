@@ -30,8 +30,6 @@ class AccessModel extends Model
 
     public function getReadUsers($galleryId)
     {
-        var_dump($galleryId);
-        var_dump($this->db);
         $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = 0");
         echo $this->db->error;
         $stmt->bind_param('i', $galleryId);
@@ -46,7 +44,23 @@ class AccessModel extends Model
         return null;
     }
 
+    public function isImageOwner(){
+        
+    }
 
+    public function getUserImageRelation($userId,$imageId){
+        $stmt = $this->db->prepare("SELECT isOwner from gallery_user_rolle join image ON gallery_user_rolle.gallery_galleryId = image.gallery_galleryId WHERE user_userId = ? and imageId = ?");
+        $stmt->bind_param('ii',$userId,$imageId);
+        if ($stmt->execute()) {
+            $results = $stmt->get_result();
+            if($results->num_rows===0){
+                return null;
+            } else {
+                return $results->fetch_assoc()["isOwner"];
+            }
+        }
+    }
+    
     public function getRelatedGalleries($userId, $isOwnerRelationship)
     {
         $stmt = $this->db->prepare("SELECT gallery_galleryId ,name FROM imagedb.gallery_user_rolle JOIN imagedb.gallery ON gallery_user_rolle.gallery_galleryId = gallery.galleryId WHERE user_userId  = ? AND isOwner = ?");
