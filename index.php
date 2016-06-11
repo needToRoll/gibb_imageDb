@@ -8,5 +8,6 @@ require_once "/Controller/Dispatcher.php";
  */
 session_start();
 session_regenerate_id();
+$_SESSION["generatedAt"] = (new DateTime())->getTimestamp();
 $dispatcher = new Dispatcher();
 $dispatcher->dispatch();

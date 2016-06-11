@@ -103,8 +103,17 @@ class ImageModel extends Model implements DatabaseInterface
         return null;
 
     }
+    
+    public function getGalleryIdBy($imageId){
+        $stmt = $this->db->prepare("SELECT gallery_galleryId FROM image where imageId = ?");
+        $stmt->bind_param("i",$imageId);
+        if($stmt->execute()){
+            $result = $stmt->get_result()->fetch_assoc();
+            return $result["gallery_galleryId"];
+        }
+    }
 
-    public function update($object)
+    public function update($id,$column,$newValue)
     {
         // TODO: Implement update() method.
     }

@@ -85,7 +85,7 @@ class TagModel extends Model implements DatabaseInterface
 
     }
 
-    public function update($object)
+    public function update($id,$column,$newValue)
     {
         // TODO: Implement update() method.
     }

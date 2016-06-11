@@ -26,7 +26,7 @@ $parent_view->insideRender("header.htm"); ?>
                  * @var $tag Tag
                  */
                 foreach ($image->getTags() as $tag) {
-                    echo "{$tag->getName()}, ";
+                    echo "#{$tag->getName()}  ";
                 }
                 ?>
             </div>
@@ -48,6 +48,7 @@ $parent_view->insideRender("header.htm"); ?>
                     </div>
                 </div>
             </div>
+            <a role="button" class="btn btn-danger" href="/image/delete/<?= $image->getId()?>">Löschen</a>
         </div>
     </div>
 

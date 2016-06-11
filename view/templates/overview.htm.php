@@ -42,7 +42,7 @@ $parent_view->insideRender("header.htm"); ?>
         </div>
 
         <div class="row">
-            <div class=><h3>Meine Galerien</h3></div>
+            <div><h3>Meine Galerien</h3></div>
             <?php foreach ($ownGalleries as $gallery):
                 /**
                  * @var $gallery Gallery
@@ -54,6 +54,7 @@ $parent_view->insideRender("header.htm"); ?>
                             <img src="/data/system/default.png" alt="Gallery Preview Image">
                             <p><a href="/gallery/showgallery/<?= $gallery->getId() ?>" class="btn btn-primary"
                                   role="button">&Ouml;ffnen</a></p>
+                            <p><a href="/gallery/delete/<?= $gallery->getId() ?>" class="btn btn-danger" role="button">L&ouml;schen</a></p>
                         </div>
                     </div>
                 </div>

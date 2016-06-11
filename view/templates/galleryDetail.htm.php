@@ -32,12 +32,16 @@ $parent_view->insideRender("header.htm"); ?>
         <div class="panel-body">
             <form action="/image/upload" method="post" enctype="multipart/form-data">
                 <div class="form-group">
+                    <div class="control-label">Name:</div>
+                    <input type="text" name="imageName"/>
+                </div>
+                <div class="form-group">
                     <div class="control-label">Bild:</div>
                     <input type="file" name="file"/>
                 </div>
                 <div class="form-group">
-                    <div class="control-label">Name:</div>
-                    <input type="text" name="imageName"/>
+                    <div class="control-label">Tags:</div>
+                    <input type="text" name="tags"/>
                 </div>
                 <input type="hidden" name="galleryId" value="<?= $gallery->getId() ?>">
                 <button type="submit" class="btn btn-primary">Hinzufügen</button>

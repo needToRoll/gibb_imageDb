@@ -16,7 +16,7 @@ interface DatabaseInterface
 
     public function readAll();
 
-    public function update($object);
+    public function update($id,$column,$newValue);
 
     public function delete($id);
 

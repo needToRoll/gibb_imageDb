@@ -27,10 +27,6 @@ class AccessModel extends Model
         $this->imageModel = new ImageModel();
     }
 
-    public function isImageOwner()
-    {
-
-    }
 
     public function getAccessByRequestedFile($path, $userId)
     {
@@ -77,7 +73,7 @@ class AccessModel extends Model
 
     public function getOwner($galleryId)
     {
-        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = TRUE");
+        $stmt = $this->db->prepare("SELECT user_userId FROM imagedb.gallery_user_rolle WHERE gallery_galleryId = ? AND isOwner = 1");
         $stmt->bind_param('i', $galleryId);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_assoc();

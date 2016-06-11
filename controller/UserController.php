@@ -26,20 +26,19 @@ class UserController
         $userId = $this->userModel->checkLogin($userName, $pw);
         if ($userId != -1) {
             $_SESSION["userId"] = $userId;
+            session_regenerate_id();
             header("Location: /Gallery/showOverview");
-        } else {
-            var_dump($userId);
-        }
+        } 
     }
 
     public function register()
     {
-        $userIdentification = $_POST["email"];
+        $userIdentification = htmlentities($_POST["email"]);
         $pw = $this->hashPw($_POST["password"]);
         $user = $this->userModel->create($userIdentification, $userIdentification, $pw, false);
         $_SESSION["userId"] = $user->getId();
+        session_regenerate_id();
         header("Location: /Gallery/showOverview");
-
     }
 
     public function hashPw($pw)

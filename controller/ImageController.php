@@ -2,7 +2,7 @@
 require_once "/model/ImageModel.php";
 require_once "/model/AccessModel.php";
 require_once "/view/View.php";
-
+require_once "TagController.php";
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -14,7 +14,7 @@ class ImageController
 
     private $imageModel;
     private $accessModel;
-
+    private $tagController;
 
     /**
      * ImageController constructor.
@@ -23,6 +23,8 @@ class ImageController
     {
         $this->imageModel = new ImageModel();
         $this->accessModel = new AccessModel();
+        $this->tagController = new TagController();
+
     }
 
     public function upload()
@@ -30,7 +32,7 @@ class ImageController
         $originalFileName = $_FILES["file"]["name"];
         $tempFilePath = $_FILES["file"]["tmp_name"];
         $galleryId = $_POST["galleryId"];
-        $imgName = $_POST["imageName"];
+        $imgName = htmlentities($_POST["imageName"]);
         $fileExt = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));
         $img = $this->getImage($tempFilePath, $fileExt);
         $timeStamp = (new DateTime())->getTimestamp();
@@ -39,7 +41,8 @@ class ImageController
         $path = __DIR__ . "/.." . $relPath;
         move_uploaded_file($tempFilePath, $path);
         $thumbPath = $this->makeThumbnail($img, $path, "thumbNail_" . $fileName . ".png");
-        $this->imageModel->create($relPath, $thumbPath, $imgName, $galleryId);
+        $_POST["imageId"] = $this->imageModel->create($relPath, $thumbPath, $imgName, $galleryId)->getId();
+        $this->tagController->create();
         header("Location: /gallery/showGallery/$galleryId");
     }
 
@@ -91,6 +94,27 @@ class ImageController
         } else {
             echo "<script>alert('Zugriff verweigert'</script>";
         }
-
     }
+
+    public function delete($args)
+    {
+        $id =$args[0];
+        $redirect = true;
+        if(isset($args[1])){
+            $redirect = $args[1];
+        }
+        $image = $this->imageModel->readById($id);
+        var_dump($image);
+        if ($this->accessModel->getUserImageRelation($_SESSION["userId"],$id)) {
+            $path = __DIR__."/..";
+            print_r(unlink($path.($image->getFile())));
+            print_r(unlink($path.($image->getThumbnail())));
+            $galleryId = $this->imageModel->getGalleryIdBy($id);
+            $this->imageModel->delete($id);
+            if($redirect) {
+                header("Location: /gallery/showGallery/$galleryId");
+            }
+        }
+    }
+
 }

@@ -60,7 +60,7 @@ class UserModel extends Model implements DatabaseInterface
         return $output;
     }
 
-    public function update($object)
+    public function update($id,$column,$newValue)
     {
         // TODO: Implement update() method.
     }

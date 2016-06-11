@@ -40,10 +40,10 @@ class GalleryModel extends Model implements DatabaseInterface
      * @param $name
      * @param $owner User
      * @param array $images Image
-     * @param array $readers User
+     * @param array $readers Users
      * @return Gallery
      */
-    public function create($name, $owner, $images = array(), $readers = array()) //TODO implement access
+    public function create($name, $owner, $images = array(), $readers = array())
     {
         $stmt = $this->db->prepare("INSERT INTO imagedb.gallery (name) VALUES (?)");
         $stmt->bind_param('s', $name);
@@ -106,16 +106,18 @@ class GalleryModel extends Model implements DatabaseInterface
         }
     }
 
-    public function update($object)
+    public function update($id,$column,$newValue)
     {
         // TODO: Implement update() method.
     }
 
     public function delete($id)
     {
-        $stmt = $this->db->prepare("DELETE FROM imagedb.gallery WHERE galleryId = :id");
-        $stmt->bind_param(":id", $id);
-        return $stmt->execute();
+        $stmt = $this->db->prepare("DELETE FROM imagedb.gallery WHERE galleryId = ?");
+        $stmt->bind_param("i", $id);
+        if ($stmt->execute()) {
+            return true;
+        }
     }
 
 }

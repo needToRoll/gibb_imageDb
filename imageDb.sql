@@ -22,8 +22,8 @@ DROP TABLE IF EXISTS `imageDb`.`user`;
 
 CREATE TABLE IF NOT EXISTS `imageDb`.`user` (
   `userId`   INT          NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(250) NULL,
-  `mail`     VARCHAR(250) NOT NULL,
+  `username` VARCHAR(250) NULL UNIQUE,
+  `mail`     VARCHAR(250) NOT NULL UNIQUE,
   `password` VARCHAR(300) NOT NULL,
   `isAdmin`  TINYINT(1)   NULL,
   PRIMARY KEY (`userId`)
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `imageDb`.`image` (
   CONSTRAINT `fk_image_galary1`
   FOREIGN KEY (`gallery_galleryId`)
   REFERENCES `imageDb`.`gallery` (`galleryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
@@ -90,13 +90,13 @@ CREATE TABLE IF NOT EXISTS `imageDb`.`image_tag` (
   CONSTRAINT `fk_image_tag_image1`
   FOREIGN KEY (`image_imageId`)
   REFERENCES `imageDb`.`image` (`imageId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_image_tag_tag1`
   FOREIGN KEY (`tag_tagId`)
   REFERENCES `imageDb`.`tag` (`tagId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
@@ -116,13 +116,13 @@ CREATE TABLE IF NOT EXISTS `imageDb`.`gallery_user_rolle` (
   CONSTRAINT `fk_galary_user_rolle_user`
   FOREIGN KEY (`user_userId`)
   REFERENCES `imageDb`.`user` (`userId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_galary_user_rolle_galary1`
   FOREIGN KEY (`gallery_galleryId`)
   REFERENCES `imageDb`.`gallery` (`galleryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 

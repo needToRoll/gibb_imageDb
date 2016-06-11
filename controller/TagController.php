@@ -26,7 +26,9 @@ class TagController
         $inputString = htmlentities($_POST["tags"]);
         $tags = explode(" ", $inputString);
         foreach ($tags as $tag) {
-            $this->tagModel->create($_POST["imageId"], $tag);
+            if(!empty($tag)) {
+                $this->tagModel->create($_POST["imageId"], $tag);
+            }
         }
         header("Location: /image/showImage/{$_POST['imageId']}");
     }
