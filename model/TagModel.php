@@ -12,20 +12,6 @@ require_once "Model.php";
 class TagModel extends Model implements DatabaseInterface
 
 {
-    public function create($imageId, $tagName)
-    {
-        $stmt = $this->db->prepare("INSERT INTO imagedb.tag (name) VALUES (?)");
-        $stmt->bind_param('s', $tagName);
-        if ($stmt->execute()) {
-            $tagId = $this->db->insert_id;
-            $statement = $this->db->prepare("INSERT INTO imagedb.image_tag (image_imageId, tag_tagId) VALUES (?,?)");
-            $statement->bind_param('ii', $imageId, $tagId);
-            if ($statement->execute()) {
-                return new Tag($tagId, $tagName);
-            }
-        }
-    }
-
     public function readByImage($imageId)
     {
         $stmt = $this->db->prepare("SELECT tag.tagId FROM tag JOIN image_tag ON tag.tagId = image_tag.tag_tagId WHERE image_imageId = ?");
@@ -45,16 +31,6 @@ class TagModel extends Model implements DatabaseInterface
     }
 
     /**
-     * @param $object Tag
-     * @return Tag
-     */
-    public function save($object)
-    {
-        return $this->create($object->getId(), $object->getName());
-
-    }
-
-    /**
      * @param $id
      * @return Tag
      */
@@ -71,6 +47,30 @@ class TagModel extends Model implements DatabaseInterface
         }
         return null;
 
+    }
+
+    /**
+     * @param $object Tag
+     * @return Tag
+     */
+    public function save($object)
+    {
+        return $this->create($object->getId(), $object->getName());
+
+    }
+
+    public function create($imageId, $tagName)
+    {
+        $stmt = $this->db->prepare("INSERT INTO imagedb.tag (name) VALUES (?)");
+        $stmt->bind_param('s', $tagName);
+        if ($stmt->execute()) {
+            $tagId = $this->db->insert_id;
+            $statement = $this->db->prepare("INSERT INTO imagedb.image_tag (image_imageId, tag_tagId) VALUES (?,?)");
+            $statement->bind_param('ii', $imageId, $tagId);
+            if ($statement->execute()) {
+                return new Tag($tagId, $tagName);
+            }
+        }
     }
 
     public function readAll()

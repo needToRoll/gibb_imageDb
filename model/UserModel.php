@@ -13,6 +13,16 @@ require_once "DatabaseInterface.php";
 class UserModel extends Model implements DatabaseInterface
 {
 
+    /**
+     * @param $object User
+     * @return User
+     */
+
+    public function save($object)
+    {
+        return $this->create($object->getUsername(), $object->getMail(), $object->getPw(), $object->getIsAdmin());
+    }
+
     public function create($username, $mail, $pw, $isAdmin)
     {
         $stmt = $this->db->prepare('INSERT INTO user (username, mail, password, isAdmin) VALUES (?,?,?,?)');
@@ -23,16 +33,6 @@ class UserModel extends Model implements DatabaseInterface
         }
         print $stmt->error;
         return null;
-    }
-
-    /**
-     * @param $object User
-     * @return User
-     */
-
-    public function save($object)
-    {
-        return $this->create($object->getUsername(), $object->getMail(), $object->getPw(), $object->getIsAdmin());
     }
 
     public function readById($id)
@@ -78,7 +78,7 @@ class UserModel extends Model implements DatabaseInterface
         $stmt->bind_param("ss", $username, $username);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_assoc();
-            if (password_verify($pw,$result["password"])) {
+            if (password_verify($pw, $result["password"])) {
                 return $result["userId"];
             }
         }

@@ -16,9 +16,9 @@ $parent_view->insideRender("header.htm"); ?>
 
     <h2><?= $gallery->getName() ?></h2>
     <div id='allImages'>
-        <?php foreach ($gallery->getImages() as $image) :?>
+        <?php foreach ($gallery->getImages() as $image) : ?>
             <a href="/image/showImage/<?= $image->getId() ?>">
-            <img src="<?= $image->getThumbnail()?>"/>
+                <img src="<?= $image->getThumbnail() ?>"/>
             </a>
         <?php endforeach; ?>
     </div>
@@ -33,7 +33,7 @@ $parent_view->insideRender("header.htm"); ?>
             <form action="/image/upload" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <div class="control-label">Bild:</div>
-                    <input type="file" name="file" />
+                    <input type="file" name="file"/>
                 </div>
                 <div class="form-group">
                     <div class="control-label">Name:</div>

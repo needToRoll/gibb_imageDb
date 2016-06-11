@@ -28,6 +28,14 @@ class GalleryController
 
     }
 
+    public function create()
+    {
+        $galleryName = $_POST["name"];
+        $owner = $this->userModel->readById($_SESSION["userId"]);
+        $this->galleryModel->create($galleryName, $owner);
+        $this->showOverview();
+    }
+
     public function showOverview()
     {
         print $_SESSION["userId"];
@@ -38,14 +46,6 @@ class GalleryController
         $viewOptions["readGalleries"] = $read;
         $view = new View("overview.htm", $viewOptions);
         $view->render();
-    }
-
-    public function create()
-    {
-        $galleryName = $_POST["name"];
-        $owner = $this->userModel->readById($_SESSION["userId"]);
-        $this->galleryModel->create($galleryName, $owner);
-        $this->showOverview();
     }
 
     public function showGallery($args)

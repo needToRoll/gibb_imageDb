@@ -111,6 +111,5 @@ class Image
         $this->tags = $tags;
     }
 
-    
 
 }

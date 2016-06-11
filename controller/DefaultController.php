@@ -12,9 +12,8 @@ require_once "/controller/GalleryController.php";
 
 class DefaultController
 {
-    
-    
-    
+
+
     public function showHome()
     {
         if (!isset($_SESSION["userId"])) {

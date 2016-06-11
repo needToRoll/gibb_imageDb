@@ -1,6 +1,6 @@
 <?php
 require_once "/Controller/Dispatcher.php";
-/**  
+/**
  * Created by PhpStorm.
  * User: bbuerf
  * Date: 04.06.2016

@@ -2,6 +2,7 @@
 require_once "/model/ImageModel.php";
 require_once "/model/AccessModel.php";
 require_once "/view/View.php";
+
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -31,14 +32,14 @@ class ImageController
         $galleryId = $_POST["galleryId"];
         $imgName = $_POST["imageName"];
         $fileExt = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));
-        $img = $this->getImage($tempFilePath,$fileExt);
+        $img = $this->getImage($tempFilePath, $fileExt);
         $timeStamp = (new DateTime())->getTimestamp();
-        $fileName = hash("sha512",$imgName.$galleryId.$timeStamp);
-        $relPath = "/data/uploaded/".$fileName.".".$fileExt;
-        $path = __DIR__."/..".$relPath;
-        move_uploaded_file($tempFilePath,$path);
-        $thumbPath = $this->makeThumbnail($img,$path,"thumbNail_".$fileName.".png");
-        $this->imageModel->create($relPath,$thumbPath,$imgName,$galleryId);
+        $fileName = hash("sha512", $imgName . $galleryId . $timeStamp);
+        $relPath = "/data/uploaded/" . $fileName . "." . $fileExt;
+        $path = __DIR__ . "/.." . $relPath;
+        move_uploaded_file($tempFilePath, $path);
+        $thumbPath = $this->makeThumbnail($img, $path, "thumbNail_" . $fileName . ".png");
+        $this->imageModel->create($relPath, $thumbPath, $imgName, $galleryId);
         header("Location: /gallery/showGallery/$galleryId");
     }
 
@@ -60,7 +61,8 @@ class ImageController
         return $image;
     }
 
-    public function makeThumbnail($original, $filename, $targetFileName){
+    public function makeThumbnail($original, $filename, $targetFileName)
+    {
 
         $imageData = @getimagesize($filename);
         if (!$imageData)
@@ -70,17 +72,18 @@ class ImageController
         $newWidth = $width / $scale;
         $newHeight = $height / $scale;
         $thumbnail = imagescale($original, $newWidth, $newHeight);
-        $relThumbPath = "/data/uploaded/thumbnails/".$targetFileName;
-        $thumbPath = __DIR__."/..".$relThumbPath;
+        $relThumbPath = "/data/uploaded/thumbnails/" . $targetFileName;
+        $thumbPath = __DIR__ . "/.." . $relThumbPath;
         imagepng($thumbnail, $thumbPath, 0);
         return $relThumbPath;
     }
 
-    public function showImage($args){
+    public function showImage($args)
+    {
         $targetId = $args[0];
         $viewArgs = array();
-        $relation = $this->accessModel->getUserImageRelation($_SESSION["userId"],$targetId);
-        if($relation!=null){
+        $relation = $this->accessModel->getUserImageRelation($_SESSION["userId"], $targetId);
+        if ($relation != null) {
             $viewArgs["isOwner"] = $relation;
             $viewArgs["image"] = $this->imageModel->readById($targetId);
             $view = new View("imageDetail.htm", $viewArgs);

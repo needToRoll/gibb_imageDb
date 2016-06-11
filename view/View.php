@@ -18,21 +18,23 @@ class View
      */
     public function __construct($template, $arguments = array())
     {
-        $this->template = __DIR__."/templates/".$template.".php";
+        $this->template = __DIR__ . "/templates/" . $template . ".php";
         $this->arguments = $arguments;
     }
 
 
-    public function fetch(){
+    public function fetch()
+    {
         ob_start();
         $this->render();
         return ob_get_clean();
     }
 
-    public function render(){
+    public function render()
+    {
         // print "rendering starded";
         $parent_view = $this;
-        foreach ($this->arguments as $key => $arg){
+        foreach ($this->arguments as $key => $arg) {
             ${$key} = $arg;
         }
         if (file_exists($this->template)) {
@@ -42,11 +44,12 @@ class View
         }
     }
 
-    public function insideRender($innerTemplate, $args = array()){
-        $innerView = new View($innerTemplate,$args);
+    public function insideRender($innerTemplate, $args = array())
+    {
+        $innerView = new View($innerTemplate, $args);
         $innerView->render();
 
-        
+
     }
 
     /**
@@ -65,15 +68,17 @@ class View
         return $this->arguments;
     }
 
-    public function __get($name){
+    public function __get($name)
+    {
         if (isset($this->arguments[$name])) {
             return $this->arguments[$name];
-        } else{
+        } else {
             return null;
         }
     }
 
-    public function __set($name, $value){
+    public function __set($name, $value)
+    {
         $this->arguments[$name] = $value;
     }
 

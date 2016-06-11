@@ -42,14 +42,15 @@ class UserController
 
     }
 
-    public function logout(){
-        session_destroy();
-        header("Location: /");
-    }
-
     public function hashPw($pw)
     {
         return password_hash($pw, PASSWORD_BCRYPT);
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header("Location: /");
     }
 
 

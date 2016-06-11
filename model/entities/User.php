@@ -31,7 +31,7 @@ class User
         $this->pw = $pw;
         $this->isAdmin = $isAdmin;
     }
-    
+
     /**
      * @return mixed
      */
@@ -111,5 +111,5 @@ class User
     {
         $this->isAdmin = $isAdmin;
     }
-   
+
 }

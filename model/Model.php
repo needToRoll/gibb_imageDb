@@ -1,5 +1,6 @@
 <?php
 require_once "/util/DbConnector.php";
+
 /**
  * Created by PhpStorm.
  * User: bbuerf

@@ -1,6 +1,7 @@
 <?php
 
 require_once "/model/TagModel.php";
+
 /**
  * Created by PhpStorm.
  * User: bbuerf
@@ -20,11 +21,12 @@ class TagController
     }
 
 
-    public function create(){
+    public function create()
+    {
         $inputString = htmlentities($_POST["tags"]);
-        $tags = explode(" ",$inputString);
-        foreach ($tags as $tag){
-            $this->tagModel->create($_POST["imageId"],$tag);
+        $tags = explode(" ", $inputString);
+        foreach ($tags as $tag) {
+            $this->tagModel->create($_POST["imageId"], $tag);
         }
         header("Location: /image/showImage/{$_POST['imageId']}");
     }

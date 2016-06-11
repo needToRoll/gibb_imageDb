@@ -15,7 +15,7 @@ class GalleryModel extends Model implements DatabaseInterface
 
     private $imageModel;
     private $accessModel;
-    
+
 
     /**
      * GalleryModel constructor.
@@ -28,6 +28,15 @@ class GalleryModel extends Model implements DatabaseInterface
     }
 
     /**
+     * @param $object Gallery
+     * @return Gallery
+     */
+    public function save($object)
+    {
+        return $this->create($object->getName(), $object->getOwner(), $object->getImages(), $object->getReadUsers());
+    }
+
+    /**
      * @param $name
      * @param $owner User
      * @param array $images Image
@@ -37,40 +46,31 @@ class GalleryModel extends Model implements DatabaseInterface
     public function create($name, $owner, $images = array(), $readers = array()) //TODO implement access
     {
         $stmt = $this->db->prepare("INSERT INTO imagedb.gallery (name) VALUES (?)");
-        $stmt->bind_param('s',$name);
+        $stmt->bind_param('s', $name);
         if ($stmt->execute()) {
             $galleryId = $this->db->insert_id;
-            $this->accessModel->setOwner($owner->getId(),$galleryId);
-            
-            foreach($readers as $reader){
+            $this->accessModel->setOwner($owner->getId(), $galleryId);
+
+            foreach ($readers as $reader) {
                 $userId = $reader->getId();
-                $this->accessModel->grantReadAccess($userId,$galleryId);
+                $this->accessModel->grantReadAccess($userId, $galleryId);
             }
-            
-            foreach($images as $image){
+
+            foreach ($images as $image) {
                 $image->setId($galleryId);
-                 $this->imageModel->save($image);
+                $this->imageModel->save($image);
             }
-            return new Gallery($galleryId,$name,$images, $owner,$readers);
+            return new Gallery($galleryId, $name, $images, $owner, $readers);
         } else {
             echo $stmt->error;
         }
 
     }
 
-    /**
-     * @param $object Gallery
-     * @return Gallery
-     */
-    public function save($object)
-    {
-        return $this->create($object->getName(),$object->getOwner(), $object->getImages(), $object->getReadUsers());
-    }
-
     public function readById($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery where galleryId = ?");
-        $stmt->bind_param("i",$id);
+        $stmt = $this->db->prepare("SELECT * FROM imagedb.gallery WHERE galleryId = ?");
+        $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
             if ($row = $stmt->get_result()->fetch_assoc()) {
                 $id = $row["galleryId"];
@@ -78,7 +78,7 @@ class GalleryModel extends Model implements DatabaseInterface
                 $readers = $this->accessModel->getReadUsers($id);
                 $owner = $this->accessModel->getOwner($id);
                 $images = $this->imageModel->readByGallery($id);
-                return new Gallery($id,$name,$images,$owner,$readers);
+                return new Gallery($id, $name, $images, $owner, $readers);
             }
 
         }
@@ -95,13 +95,13 @@ class GalleryModel extends Model implements DatabaseInterface
         $results = array();
         if ($stmt->execute()) {
             $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $id = $row["galleryId"];
                 $name = $row["name"];
                 $readers = $this->accessModel->getReadUsers($id);
                 $owner = $this->accessModel->getOwner($id);
                 $images = $this->imageModel->readByGallery($id);
-                $results[] = new Gallery($id,$name,$images,$owner,$readers);
+                $results[] = new Gallery($id, $name, $images, $owner, $readers);
             }
         }
     }
@@ -114,7 +114,7 @@ class GalleryModel extends Model implements DatabaseInterface
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM imagedb.gallery WHERE galleryId = :id");
-        $stmt->bind_param(":id",$id);
+        $stmt->bind_param(":id", $id);
         return $stmt->execute();
     }
 

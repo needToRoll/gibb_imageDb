@@ -13,7 +13,7 @@ class Gallery
     private $images;
     private $readUsers;
     private $owner;
-    
+
 
     /**
      * Gallary constructor.
@@ -113,6 +113,5 @@ class Gallery
         $this->id = $id;
     }
 
-    
 
 }
