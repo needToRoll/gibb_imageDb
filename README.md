@@ -1,3 +1,3 @@
 # gibb_imageDb
 An image-blog built in school
-createt in 2016
+created in 2016
